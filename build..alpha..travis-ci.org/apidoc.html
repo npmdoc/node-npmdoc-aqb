@@ -1611,15 +1611,6 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.aqb.toString">
-            function <span class="apidocSignatureSpan">aqb.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
             <a class="apidocElementLiA" href="#apidoc.element.aqb.update">
             function <span class="apidocSignatureSpan">aqb.</span>update
             <span class="apidocSignatureSpan">()</span>
@@ -7016,20 +7007,20 @@ If the value is already an AQL Raw Expression, its value is wrapped instead.
   };
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
+  return function () {
+    console.warn(&#x27;The AQL function &#x27; + functionName + &#x27; is deprecated!&#x27;);
+    return fn.apply(this, arguments);
+  };
+}
 
-`qb.ref(&#x27;x&#x27;).then(&#x27;y&#x27;).else(&#x27;z&#x27;)` =&#x3e; `(x ? y : z)`
+Object.keys(assumptions.builtins).forEach(function (key) {
+  QB[key] = QB.<span class="apidocCodeKeywordSpan">fn</span>(key, assumptions.builtins[key]);
+  if (assumptions.deprecatedBuiltins.indexOf(key) !== -1) {
+    QB[key] = deprecateAqlFunction(QB[key], key);
+  }
+});
 
-### Function Call
-
-Creates a functon call for the given name and arguments.
-
-`qb.<span class="apidocCodeKeywordSpan">fn</span>(name)(...args)`
-
-If the values are not already AQL values, they will be converted automatically.
-
-For built-in functions, methods with the relevant function name are already provided by the query builder.
-
-**Examples**
+module.exports = QB;
 ...</pre></li>
     </ul>
 
@@ -8010,20 +8001,21 @@ SORT x DESC, y ASC`
   return new types.StringLiteral(value);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-If the value is already an AQL Number or AQL Integer, its own value will be wrapped instead.
+var console = require(&#x27;console&#x27;);
+var AqlError = require(&#x27;./errors&#x27;).AqlError;
+var assumptions = require(&#x27;./assumptions&#x27;);
+var types = require(&#x27;./types&#x27;);
 
-
-### String
-
-Wraps the given value as an AQL String literal.
-
-`qb.<span class="apidocCodeKeywordSpan">str</span>(value)`
-
-If the value is not a JavaScript String, it will be converted first.
-
-If the value is a quoted string, it will be treated as a string literal.
-
-If the value is an object with a *toAQL* method, the result of calling that method will be wrapped instead.
+function QB(obj) {
+if (typeof obj === &#x27;string&#x27;) {
+  return QB.<span class="apidocCodeKeywordSpan">str</span>(obj);
+}
+if (obj === null || obj === undefined) {
+  return new types.NullLiteral();
+}
+if (typeof obj === &#x27;object&#x27;) {
+  if (obj instanceof Date) {
+    return types.autoCastToken(JSON.stringify(obj));
 ...</pre></li>
     </ul>
 
@@ -8123,38 +8115,6 @@ If the values are not already AQL values, they will be converted automatically.
 `qb(2).to(5)` =&#x3e; `2..5`
 
 ### Property Access
-...</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.aqb.toString" id="apidoc.element.aqb.toString">
-        function <span class="apidocSignatureSpan">aqb.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-this._args = [];
-var allowKeyword = false;
-this._args = args.map(function (arg, i) {
-  if (!allowKeyword &#x26;&#x26; arg) {
-    if (arg instanceof Keyword || (
-      typeof arg === &#x27;string&#x27; &#x26;&#x26; SortExpression.keywords.indexOf(arg.toUpperCase()) !== -1
-    )) {
-      throw new AqlError(&#x27;Unexpected keyword &#x27; + arg.<span class="apidocCodeKeywordSpan">toString</span>() + &#x27; at
- offset &#x27; + i);
-    }
-  }
-  if (typeof arg === &#x27;string&#x27; &#x26;&#x26; SortExpression.keywords.indexOf(arg.toUpperCase()) !== -1) {
-    allowKeyword = false;
-    return new Keyword(arg);
-  } else {
-    allowKeyword = true;
 ...</pre></li>
     </ul>
 
