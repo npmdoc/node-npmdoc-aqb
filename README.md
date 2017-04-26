@@ -1,6 +1,6 @@
 # npmdoc-aqb
 
-#### api documentation for  [aqb (v2.1.0)](https://github.com/arangodb/aqbjs)  [![npm package](https://img.shields.io/npm/v/npmdoc-aqb.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-aqb) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-aqb.svg)](https://travis-ci.org/npmdoc/node-npmdoc-aqb)
+#### basic api documentation for  [aqb (v2.1.0)](https://github.com/arangodb/aqbjs)  [![npm package](https://img.shields.io/npm/v/npmdoc-aqb.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-aqb) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-aqb.svg)](https://travis-ci.org/npmdoc/node-npmdoc-aqb)
 
 #### ArangoDB AQL query builder.
 
@@ -85,7 +85,8 @@
         "test": "npm run lint && npm run test-only",
         "test-only": "mocha -t 30000 --growl -R spec test test/**"
     },
-    "version": "2.1.0"
+    "version": "2.1.0",
+    "bin": {}
 }
 ```
 
